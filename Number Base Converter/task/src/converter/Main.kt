@@ -1,4 +1,8 @@
-package converter // Do not delete this line
+package converter
+
+import java.math.BigInteger
+
+// Do not delete this line
 
 fun main() {
     showMenu()
@@ -10,43 +14,44 @@ fun inputFromPrompt(prompt: String): String {
 }
 
 fun showMenu() {
-
-    loop@ while (true) {
-        val choice = inputFromPrompt("Do you want to convert /from decimal or /to decimal? (To quit type /exit)")
-        when (choice) {
-            "/from" -> {
-                val decimalNumber = inputFromPrompt("Enter number in decimal system:").toInt()
-                val targetBase = inputFromPrompt("Enter target base:").toInt()
-
-                println("Conversion result: ${convertFromDecimal(decimalNumber,targetBase)}")
-            }
-            "/to" -> {
-                val sourceNumber = inputFromPrompt("Enter source number:")
-                val sourceBase = inputFromPrompt("Enter source base:").toInt()
-                when (sourceBase) {
-                    2,8,16-> println("Conversion to decimal result: ${convertToDecimal(sourceNumber,sourceBase)}")
-                }
-            }
-            "/exit" -> break@loop
+    val bases = inputFromPrompt("Enter two numbers in format: {source base} {target base} (To quit type /exit)")
+    if (bases != "/exit") {
+        val sourceBase = bases.split(" ")[0].toInt()
+        val targetBase = bases.split(" ")[1].toInt()
+        while (true) {
+            val sourceNumber = inputFromPrompt("Enter number in base $sourceBase to convert to base $targetBase (To go back type /back)")
+            if (sourceNumber == "/back") break
+            println("Conversion result: ${convertArbitrary(sourceBase, sourceNumber, targetBase)}")
         }
+        showMenu()
     }
 }
 
-fun convertFromDecimal(decimal: Int, radix: Int): String {
-
+fun convertFromDecimal(decimal: BigInteger, radix: Int): String {
     var number = decimal
     val remaindersList = mutableListOf<Int>()
 
-    while (true) {
-        if (radix == 1) {
-            for (i in 1..number) remaindersList.add(1)
-            break
-        } else if (radix == 0) {
-            return "Impossible"
-        } else {
-            remaindersList.add(number%radix)
-            val newNumber = number/radix
-            if (newNumber == 0) break else number = newNumber
+    loop@while (true) {
+        when (radix) {
+            1 -> {
+                var iterator = BigInteger.ONE
+                while (iterator <= number) {
+                    remaindersList.add(1)
+                    iterator++
+                }
+                break@loop
+            }
+            0 -> {
+                return "Impossible"
+            }
+            else -> {
+                val radixAsBigInt = BigInteger.valueOf(radix.toLong())
+                remaindersList.add((number%radixAsBigInt).toInt())
+                val newNumber = number/radixAsBigInt
+                if (newNumber == BigInteger.ZERO) {
+                    break@loop
+                } else number = newNumber
+            }
         }
     }
 
@@ -59,8 +64,12 @@ fun convertFromDecimal(decimal: Int, radix: Int): String {
     return remaindersListChar.reversed().joinToString("")
 }
 
-fun convertToDecimal(sourceChar: String, sourceBase: Int): Int {
-    return Integer.parseInt(sourceChar,sourceBase)
+fun convertToDecimal(sourceChar: String, sourceBase: Int): BigInteger {
+    return sourceChar.toBigInteger(sourceBase)
+}
+
+fun convertArbitrary(sourceBase: Int, sourceNumber: String, targetBase: Int): String {
+    return convertFromDecimal(convertToDecimal(sourceNumber,sourceBase),targetBase)
 }
 
 fun digitToChar(digit: Int): Char {
@@ -70,5 +79,4 @@ fun digitToChar(digit: Int): Char {
         val amountAbove = digit-10
         return 'A'+amountAbove
     }
-
 }
