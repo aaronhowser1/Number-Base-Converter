@@ -1,24 +1,2 @@
-# Project exclude paths
-/.gradle/
-/.idea
-/build.gradle
-/gradle/wrapper/
-/Number Base Converter/task/test/NumeralSystemConverterTest.java
-/Number Base Converter/Convert decimals/task.html
-/Number Base Converter/Convert decimals/task-info.yaml
-/Number Base Converter/Convert decimals/task-remote-info.yaml
-/Number Base Converter/Convert fractions/task.html
-/Number Base Converter/Convert fractions/task-info.yaml
-/Number Base Converter/Convert fractions/task-remote-info.yaml
-/Number Base Converter/Convert to any base/task.html
-/Number Base Converter/Convert to any base/task-info.yaml
-/Number Base Converter/Convert to any base/task-remote-info.yaml
-/Number Base Converter/Convert to decimal/task.html
-/Number Base Converter/Convert to decimal/task-info.yaml
-/Number Base Converter/Convert to decimal/task-remote-info.yaml
-/Number Base Converter/lesson-info.yaml
-/course-info.yaml
-/course-remote-info.yaml
-/gradlew
-/gradlew.bat
-/settings.gradle
+*
+!*.kt
