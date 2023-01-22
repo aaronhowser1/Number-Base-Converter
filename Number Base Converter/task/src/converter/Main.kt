@@ -27,7 +27,7 @@ fun showMenu() {
     }
 }
 
-fun convertFromDecimal(decimal: BigInteger, radix: Int): String {
+fun convertIntegerFromDecimal(decimal: BigInteger, radix: Int): String {
     var number = decimal
     val remaindersList = mutableListOf<Int>()
 
@@ -64,12 +64,16 @@ fun convertFromDecimal(decimal: BigInteger, radix: Int): String {
     return remaindersListChar.reversed().joinToString("")
 }
 
-fun convertToDecimal(sourceChar: String, sourceBase: Int): BigInteger {
+fun convertIntegerToDecimal(sourceChar: String, sourceBase: Int): BigInteger {
     return sourceChar.toBigInteger(sourceBase)
 }
 
+fun convertFractionalToDecimal() {
+    //I got bored so im moving to a new project now
+}
+
 fun convertArbitrary(sourceBase: Int, sourceNumber: String, targetBase: Int): String {
-    return convertFromDecimal(convertToDecimal(sourceNumber,sourceBase),targetBase)
+    return convertIntegerFromDecimal(convertIntegerToDecimal(sourceNumber,sourceBase),targetBase)
 }
 
 fun digitToChar(digit: Int): Char {
